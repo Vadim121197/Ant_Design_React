@@ -1,0 +1,8 @@
+.app {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.ant-form-item-label > label.ant-form-item-required::before {
+    content: none !important;
+}

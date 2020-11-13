@@ -1,28 +1,36 @@
 import React from 'react'
-import { Form, Input, Button, Checkbox } from 'antd'
+import { Form, Input, Button } from 'antd'
+import { useDispatch } from 'react-redux'
+import { addUserInfo } from '../../../redux/slices/formSlices'
+
+const validateMessages = {
+    required: 'Required field!',
+    types: {
+        email: 'Email is not valid!',
+    },
+}
 
 const FirstForm = () => {
-    const layout = {
-        labelCol: {
-            span: 8,
-        },
-        wrapperCol: {
-            span: 16,
-        },
+    const dispatch = useDispatch()
+
+    const [form] = Form.useForm()
+
+    const formLayout = {
+        labelCol: { span: 24, offset: 9 },
+        wrapperCol: { span: 6, offset: 9 },
     }
 
-    const validateMessages = {
-        required: '${label} is required!',
-        types: {
-            email: '${label} is not a valid email!',
-            
-        }
+    const onFinish = (values) => {
+        dispatch(addUserInfo(values.user))
+        form.resetFields()
     }
 
-        return (
+    return (
+        <>
             <Form
-                {...layout}
-                name="nest-messages"
+                {...formLayout}
+                form={form}
+                name="firstForm"
                 onFinish={onFinish}
                 validateMessages={validateMessages}
             >
@@ -42,20 +50,21 @@ const FirstForm = () => {
                     label="Email"
                     rules={[
                         {
+                            required: true,
                             type: 'email',
                         },
                     ]}
                 >
                     <Input />
                 </Form.Item>
-                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+                <Form.Item>
                     <Button type="primary" htmlType="submit">
                         Submit
                     </Button>
                 </Form.Item>
             </Form>
-        )
-    }
+        </>
+    )
 }
 
 export default FirstForm
